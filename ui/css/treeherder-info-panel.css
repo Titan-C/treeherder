@@ -2,18 +2,19 @@ strong {
   font-weight: bold;
 }
 
-div#info-panel {
-  background-color: #AAAAAA;
+details-panel {
+  /*background-color: #AAAAAA;*/
   font-size: 12px;
-  height: 35%;
-  max-height: 75%;
-  flex: none;
-  display: flex;
-  flex-flow: column;
+  /*height: 35%;*/
+  /*max-height: 75%;*/
+  /*flex: none;*/
+  /*display: flex;*/
+  /*flex-flow: column;*/
 }
 
 .info-panel-slide {
   animation: info-panel-slide 0.4s;
+  height: 100%;
 }
 
 @keyframes info-panel-slide {
@@ -21,17 +22,26 @@ div#info-panel {
   100% { transform: translateY(0%); }
 }
 
-div#info-panel .navbar {
+#tabs-panel {
+  width: 100%;
+}
+
+div#info-panel .navbar,
+div#tabs-panel .react-tabs__tab-list {
   border-radius: 0;
   border-style: solid;
-  border-color: #42484F;
-  border-width: 1px 0;
+  /*border-color: #42484F;*/
+  /*border-width: 1px 0;*/
   height: 33px;
+  width: 100%;
   margin: 0;
   font-size: 12px;
   min-height: 33px;
   min-width: initial;
   z-index: 100;
+  background-color: #252C33;
+  border: 1px solid transparent;
+  color: #CED3D9;
 }
 
 div#info-panel-resizer {
@@ -40,6 +50,11 @@ div#info-panel-resizer {
   background-color: #919dad;
   cursor: ns-resize;
   height: 2px;
+}
+
+.info-panel-controls span {
+  text-align: center;
+  padding: 5px;
 }
 
 div#info-panel .navbar-nav > ul {
@@ -103,10 +118,10 @@ div#info-panel .info-panel-navbar > ul.tab-headers > li {
   flex-direction: row;
 }
 
-.tab-headers {
-  flex-direction: row;
-  min-width: 550px;
-}
+/*.tab-headers {*/
+  /*flex-direction: row;*/
+  /*min-width: 550px;*/
+/*}*/
 
 .perf-job-selected {
   /* An override to optimize all other non-perf jobs at 550px */
@@ -167,9 +182,25 @@ div#info-panel .info-panel-navbar > li.active a:focus {
   color: #EEF0F2;
 }
 
+.selected-tab {
+  background-color: #1A4666;
+  color: #EEF0F2;
+  padding-right: 4px;
+}
+
+.react-tabs {
+  height: 100%;
+  width: 100%;
+}
+
+details-panel {
+    height: 35%;
+    max-height: 75%;
+}
+
 #info-panel-content {
   position: relative; /* So we can absolutely position the loading overlay */
-  height: 60%;
+  height: 100%;
   flex: auto;
   display: flex;
   flex-flow: row;
@@ -262,7 +293,7 @@ div#info-panel .info-panel-navbar > li.active a:focus {
 }
 
 #job-details-panel ul li label {
-  padding: 0;
+  padding: 0 3px 0 0;
   margin: 2px 0;
   font-weight: bold;
 }

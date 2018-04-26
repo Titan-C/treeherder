@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { react2angular } from 'react2angular/index.es2015';
 
-import treeherder from '../js/treeherder';
-import { getBugUrl } from '../helpers/urlHelper';
-import { thEvents } from "../js/constants";
+import { getBugUrl } from '../../../helpers/urlHelper';
+import { thEvents } from "../../../js/constants";
+import { with$injector } from '../../../context/InjectorContext';
 
 function RelatedBugSaved(props) {
   const { deleteBug, bug } = props;
@@ -139,7 +138,7 @@ AnnotationsTable.propTypes = {
   dateFilter: PropTypes.func.isRequired,
 };
 
-export default class AnnotationsTab extends React.Component {
+class AnnotationsTab extends React.Component {
   constructor(props) {
     super(props);
 
@@ -154,6 +153,8 @@ export default class AnnotationsTab extends React.Component {
 
   componentDidMount() {
     const { classifications, bugs } = this.props;
+
+    // TODO: load our own bugs
 
     this.$rootScope.$on(thEvents.deleteClassification, () => {
       if (classifications[0]) {
@@ -265,7 +266,4 @@ AnnotationsTab.defaultProps = {
   selectedJob: null,
 };
 
-treeherder.component('annotationsTab', react2angular(
-  AnnotationsTab,
-  ['classificationTypes', 'classifications', 'bugs', 'selectedJob'],
-  ['$injector']));
+export default with$injector(AnnotationsTab);

@@ -107,7 +107,7 @@ export default class PushActionMenu extends React.PureComponent {
   }
 
   render() {
-    const { loggedIn, isStaff, repoName, revision, pushId, runnableVisible,
+    const { isLoggedIn, isStaff, repoName, revision, pushId, runnableVisible,
             hideRunnableJobsCb, showRunnableJobsCb } = this.props;
     const { topOfRangeUrl, bottomOfRangeUrl } = this.state;
 
@@ -133,8 +133,8 @@ export default class PushActionMenu extends React.PureComponent {
               onClick={() => hideRunnableJobsCb()}
             >Hide Runnable Jobs</li> :
             <li
-              title={loggedIn ? 'Add new jobs to this push' : 'Must be logged in'}
-              className={loggedIn ? 'dropdown-item' : 'dropdown-item disabled'}
+              title={isLoggedIn ? 'Add new jobs to this push' : 'Must be logged in'}
+              className={isLoggedIn ? 'dropdown-item' : 'dropdown-item disabled'}
               onClick={() => showRunnableJobsCb()}
             >Add new jobs</li>
           }
@@ -185,7 +185,7 @@ export default class PushActionMenu extends React.PureComponent {
 PushActionMenu.propTypes = {
   runnableVisible: PropTypes.bool.isRequired,
   isStaff: PropTypes.bool.isRequired,
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   revision: PropTypes.string.isRequired,
   repoName: PropTypes.string.isRequired,
   pushId: PropTypes.number.isRequired,

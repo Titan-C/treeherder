@@ -5,15 +5,16 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Highlighter from 'react-highlight-words';
 
-import { getBugUrl, getLogViewerUrl, getReftestUrl } from "../../helpers/urlHelper";
-import { isReftest } from "../../helpers/jobHelper";
-import { getSearchWords } from "../../helpers/displayHelper";
-import intermittentTemplate from '../../partials/main/intermittent.html';
+import { getBugUrl, getLogViewerUrl, getReftestUrl } from "../../../../helpers/urlHelper";
+import { isReftest } from "../../../../helpers/jobHelper";
+import { getSearchWords } from "../../../../helpers/displayHelper";
+import intermittentTemplate from '../../../../partials/main/intermittent.html';
+import { withPinboard } from '../../../../context/PinboardContext';
 
 /**
  * Editable option
  */
-export default class LineOption extends React.Component {
+class LineOption extends React.Component {
   constructor(props) {
     super(props);
     const { $injector } = props;
@@ -76,7 +77,7 @@ export default class LineOption extends React.Component {
       optionModel,
       selectedOption,
       canClassify,
-      pinBoard,
+      pinboard,
       onOptionChange,
       onIgnoreAlwaysChange,
       ignoreAlways,
@@ -105,10 +106,10 @@ export default class LineOption extends React.Component {
               className={canClassify ? '' : 'hidden'}
             />}
             {!!option.bugNumber && <span className="line-option-text">
-              {(!canClassify || pinBoard.isPinned(job)) &&
+              {(!canClassify || pinboard.pinnedJobs.includes(job)) &&
                 <button
                   className="btn btn-xs btn-light-bordered"
-                  onClick={() => pinBoard.addBug({ id: option.bugNumber }, job)}
+                  onClick={() => pinboard.addBug({ id: option.bugNumber }, job)}
                   title="add to list of bugs to associate with all pinned jobs"
                 ><i className="fa fa-thumb-tack" /></button>}
               {!!option.bugResolution &&
@@ -196,7 +197,7 @@ LineOption.propTypes = {
   optionModel: PropTypes.object.isRequired,
   canClassify: PropTypes.bool.isRequired,
   ignoreAlways: PropTypes.bool.isRequired,
-  pinBoard: PropTypes.object.isRequired,
+  pinboard: PropTypes.object.isRequired,
   selectedOption: PropTypes.object.isRequired,
   onOptionChange: PropTypes.func.isRequired,
   onIgnoreAlwaysChange: PropTypes.func,
@@ -209,3 +210,5 @@ LineOption.defaultProps = {
   onIgnoreAlwaysChange: null,
   manualBugNumber: undefined,
 };
+
+export default withPinboard(LineOption);

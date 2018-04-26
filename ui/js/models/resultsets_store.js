@@ -301,6 +301,7 @@ treeherder.factory('ThResultSetStore', [
 
         var setSelectedJob = function (lastJobObjSelected) {
             repoData.lastJobObjSelected = lastJobObjSelected;
+            $timeout(() => { $rootScope.selectedJob = lastJobObjSelected; });
         };
 
         var getPlatformKey = function (name, option) {

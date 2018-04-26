@@ -1,4 +1,4 @@
-import { extendProperties } from "../../helpers/objectHelper";
+import { extendProperties } from "../../../../helpers/objectHelper";
 
 export default class LineOptionModel {
   constructor(type, id, classifiedFailureId, bugNumber,

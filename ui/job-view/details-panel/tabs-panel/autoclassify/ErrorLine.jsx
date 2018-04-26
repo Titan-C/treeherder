@@ -6,10 +6,9 @@ import { FormGroup } from 'reactstrap';
 import LineOption from './LineOption';
 import LineOptionModel from './LineOptionModel';
 import StaticLineOption from './StaticLineOption';
-import { getBugUrl, getLogViewerUrl } from "../../helpers/urlHelper";
-import { stringOverlap, highlightLogLine } from "../../helpers/autoclassifyHelper";
-import { thEvents } from "../../js/constants";
-
+import { getBugUrl, getLogViewerUrl } from "../../../../helpers/urlHelper";
+import { stringOverlap, highlightLogLine } from "../../../../helpers/autoclassifyHelper";
+import { thEvents } from "../../../../js/constants";
 
 const GOOD_MATCH_SCORE = 0.75;
 const BAD_MATCH_SCORE = 0.25;
@@ -22,7 +21,6 @@ export default class ErrorLine extends React.Component {
     const { $injector, errorLine, setEditable } = this.props;
 
     this.$rootScope = $injector.get('$rootScope');
-    this.thPinboard = $injector.get('thPinboard');
     this.bestOption = null;
 
     let options = [];
@@ -599,7 +597,6 @@ export default class ErrorLine extends React.Component {
                       onOptionChange={this.onOptionChange}
                       ignoreAlways={option.ignoreAlways}
                       $injector={$injector}
-                      pinBoard={this.thPinboard}
                     />
                   </li>))}
               </ul>
@@ -625,7 +622,6 @@ export default class ErrorLine extends React.Component {
                       manualBugNumber={option.manualBugNumber}
                       ignoreAlways={option.ignoreAlways}
                       $injector={$injector}
-                      pinBoard={this.thPinboard}
                     />
                   </li>))}
               </ul>}
@@ -639,7 +635,6 @@ export default class ErrorLine extends React.Component {
               option={selectedOption}
               numOptions={options.length}
               canClassify={canClassify}
-              pinBoard={this.thPinboard}
               setEditable={setEditable}
               ignoreAlways={selectedOption.ignoreAlways}
               manualBugNumber={selectedOption.manualBugNumber}

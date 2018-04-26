@@ -25,18 +25,17 @@ import './js/treeherder_app';
 
 // Treeherder React UI
 import './job-view/PushList';
+import './job-view/details-panel/DetailsPanel';
 
 // Treeherder JS
 import './js/components/auth';
 import './js/directives/treeherder/main';
 import './js/directives/treeherder/top_nav_bar';
-import './js/directives/treeherder/bottom_nav_panel';
 import './js/services/main';
 import './js/services/buildapi';
 import './js/services/taskcluster';
 import './js/services/classifications';
 import './js/services/jobfilters';
-import './js/services/pinboard';
 import './js/services/treestatus';
 import './js/services/tcactions';
 import './js/models/resultset';
@@ -65,14 +64,4 @@ import './js/controllers/notification';
 import './js/controllers/filters';
 import './js/controllers/bugfiler';
 import './js/controllers/tcjobactions';
-import './plugins/tabs';
-import './plugins/controller';
-import './plugins/pinboard';
-import './details-panel/JobDetailsPane';
-import './details-panel/JobDetailsTab';
-import './details-panel/FailureSummaryTab';
-import './details-panel/AutoclassifyTab';
-import './details-panel/AnnotationsTab';
-import './details-panel/SimilarJobsTab';
-import './details-panel/PerformanceTab';
 import './js/filters';
