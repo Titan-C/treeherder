@@ -8,7 +8,7 @@ import TabsPanel from './tabs-panel/TabsPanel';
 import treeherder from "../../js/treeherder";
 import { getLogViewerUrl, getReftestUrl } from "../../helpers/urlHelper";
 import SummaryPanel from './summary-panel/SummaryPanel';
-import Pinboard from './pinboard/Pinboard';
+import PinBoard from './pinboard/PinBoard';
 import { thEvents, thBugSuggestionLimit } from '../../js/constants';
 
 class DetailsPanel extends React.Component {
@@ -266,7 +266,7 @@ class DetailsPanel extends React.Component {
             resizer-height="6"
             resizer-bottom="#info-panel"
           />
-          <Pinboard
+          <PinBoard
             id="pinboard-panel"
             isVisible={isPinboardVisible}
             isLoggedIn={user.isLoggedIn || false}

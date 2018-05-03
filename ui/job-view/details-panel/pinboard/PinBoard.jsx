@@ -10,7 +10,7 @@ import { thEvents, thPinboardCountError } from "../../../js/constants";
 import { PinboardContext } from "../../../context/PinboardContext";
 import { with$injector } from '../../../context/InjectorContext';
 
-class Pinboard extends React.Component {
+class PinBoard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -288,7 +288,7 @@ class Pinboard extends React.Component {
     if (!this.props.isLoggedIn) {
       return "Not logged in";
     } else if (!this.canCancelAllPinnedJobs()) {
-      return "No pending / running jobs in pinboard";
+      return "No pending / running jobs in pinBoard";
     }
 
     return "Cancel all the pinned jobs";
@@ -317,7 +317,7 @@ class Pinboard extends React.Component {
         (thisClass.failure_classification_id === 2 && thisClass.text.length > 7));
   }
 
-  // Facilitates Clear all if no jobs pinned to reset pinboard UI
+  // Facilitates Clear all if no jobs pinned to reset pinBoard UI
   pinboardIsDirty() {
     return this.state.classification.text !== '' ||
       !!PinboardContext.relatedBugs.length ||
@@ -387,7 +387,7 @@ class Pinboard extends React.Component {
     document.off('click', this.handleRelatedBugDocumentClick);
     if (tf) {
       // Rebind escape to canceling the bug entry, pressing escape
-      // again will close the pinboard as usual.
+      // again will close the pinBoard as usual.
       Mousetrap.bind('escape', () => {
         const cancel = this.toggleEnterBugNumber.bind(this, false);
         cancel();
@@ -628,7 +628,7 @@ class Pinboard extends React.Component {
   }
 }
 
-Pinboard.propTypes = {
+PinBoard.propTypes = {
   $injector: PropTypes.object.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
@@ -638,11 +638,11 @@ Pinboard.propTypes = {
   revisionList: PropTypes.array,
 };
 
-Pinboard.defaultProps = {
+PinBoard.defaultProps = {
   email: null,
   selectedJob: null,
   classificationTypes: null,
   revisionList: [],
 };
 
-export default with$injector(Pinboard);
+export default with$injector(PinBoard);

@@ -188,7 +188,7 @@ export default class PushList extends React.Component {
     // on the component directly.
     //
     // Filter the list of possible jobs down to ONLY ones in the .th-view-content
-    // div (excluding pinboard) and then to the specific selector passed
+    // div (excluding pinBoard) and then to the specific selector passed
     // in.  And then to only VISIBLE (not filtered away) jobs.  The exception
     // is for the .selected-job.  If that's not visible, we still want to
     // include it, because it is the anchor from which we find
@@ -259,7 +259,7 @@ export default class PushList extends React.Component {
     // Suppress for various UI elements so selection is preserved
     const ignoreClear = event.target.hasAttribute("data-ignore-job-clear-on-click");
 
-    if (!ignoreClear && !this.props.pinboard.pinnedJobs.length) {
+    if (!ignoreClear && !this.props.pinBoard.pinnedJobs.length) {
       const selected = findSelectedInstance();
       if (selected) {
         selected.setSelected(false);
@@ -319,7 +319,7 @@ export default class PushList extends React.Component {
 
 PushList.propTypes = {
   $injector: PropTypes.object.isRequired,
-  pinboard: PropTypes.object.isRequired,
+  pinBoard: PropTypes.object.isRequired,
   repoName: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   revision: PropTypes.string,

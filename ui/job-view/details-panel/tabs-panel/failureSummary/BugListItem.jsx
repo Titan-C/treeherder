@@ -10,7 +10,7 @@ import { withPinboard } from '../../../../context/PinboardContext';
 function BugListItem(props) {
   const {
     bug, suggestion,
-    bugClassName, title, $timeout, pinboard, selectedJob,
+    bugClassName, title, $timeout, pinBoard, selectedJob,
   } = props;
   const bugUrl = getBugUrl(bug.id);
 
@@ -18,7 +18,7 @@ function BugListItem(props) {
     <li>
       <button
         className="btn btn-xs btn-light-bordered"
-        onClick={() => $timeout(() => pinboard.addBug(bug, selectedJob))}
+        onClick={() => $timeout(() => pinBoard.addBug(bug, selectedJob))}
         title="add to list of bugs to associate with all pinned jobs"
       >
         <i className="fa fa-thumb-tack" />
@@ -46,7 +46,7 @@ BugListItem.propTypes = {
   bug: PropTypes.object.isRequired,
   suggestion: PropTypes.object.isRequired,
   $timeout: PropTypes.func.isRequired,
-  pinboard: PropTypes.object.isRequired,
+  pinBoard: PropTypes.object.isRequired,
   selectedJob: PropTypes.object.isRequired,
   bugClassName: PropTypes.string,
   title: PropTypes.string,

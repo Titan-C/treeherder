@@ -157,11 +157,11 @@ class AutoclassifyTab extends React.Component {
   }
 
   /**
-   * Pin selected job to the pinboard
+   * Pin selected job to the pinBoard
    */
   onPin() {
     //TODO: consider whether this should add bugs or mark all lines as ignored
-    this.props.pinboard.pinJob(this.props.job);
+    this.props.pinBoard.pinJob(this.props.job);
   }
 
   onToggleEditable() {
@@ -525,7 +525,7 @@ class AutoclassifyTab extends React.Component {
 
 AutoclassifyTab.propTypes = {
   $injector: PropTypes.object.isRequired,
-  pinboard: PropTypes.object.isRequired,
+  pinBoard: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   job: PropTypes.object.isRequired,
   hasLogs: PropTypes.bool.isRequired,

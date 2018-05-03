@@ -77,7 +77,7 @@ class LineOption extends React.Component {
       optionModel,
       selectedOption,
       canClassify,
-      pinboard,
+      pinBoard,
       onOptionChange,
       onIgnoreAlwaysChange,
       ignoreAlways,
@@ -106,10 +106,10 @@ class LineOption extends React.Component {
               className={canClassify ? '' : 'hidden'}
             />}
             {!!option.bugNumber && <span className="line-option-text">
-              {(!canClassify || pinboard.pinnedJobs.includes(job)) &&
+              {(!canClassify || pinBoard.pinnedJobs.includes(job)) &&
                 <button
                   className="btn btn-xs btn-light-bordered"
-                  onClick={() => pinboard.addBug({ id: option.bugNumber }, job)}
+                  onClick={() => pinBoard.addBug({ id: option.bugNumber }, job)}
                   title="add to list of bugs to associate with all pinned jobs"
                 ><i className="fa fa-thumb-tack" /></button>}
               {!!option.bugResolution &&
@@ -197,7 +197,7 @@ LineOption.propTypes = {
   optionModel: PropTypes.object.isRequired,
   canClassify: PropTypes.bool.isRequired,
   ignoreAlways: PropTypes.bool.isRequired,
-  pinboard: PropTypes.object.isRequired,
+  pinBoard: PropTypes.object.isRequired,
   selectedOption: PropTypes.object.isRequired,
   onOptionChange: PropTypes.func.isRequired,
   onIgnoreAlwaysChange: PropTypes.func,

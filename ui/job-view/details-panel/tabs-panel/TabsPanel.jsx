@@ -128,7 +128,7 @@ class TabsPanel extends React.Component {
               <div
                 title={isPinboardVisible ? 'Close the pinboard' : 'Open the pinboard'}
                 className="pinboard-btn-text"
-              >Pinboard
+              >PinBoard
                 <div
                   ng-if="pinboard_service.count.numPinnedJobs"
                   title={getCountPinnedTitle()}
@@ -161,7 +161,7 @@ class TabsPanel extends React.Component {
               <span
                 className="btn pinboard-btn-text"
                 onClick={this.togglePinboardVisibility}
-              >Pinboard</span>
+              >PinBoard</span>
               <span
                 onClick={this.closeJob}
                 className="btn"

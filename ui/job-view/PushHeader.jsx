@@ -154,18 +154,18 @@ class PushHeader extends React.PureComponent {
   }
 
   pinAllShownJobs() {
-    const { pinboard } = this.props;
+    const { pinBoard } = this.props;
 
-    if (!pinboard.spaceRemaining()) {
+    if (!pinBoard.spaceRemaining()) {
       this.thNotify.send(thPinboardCountError, 'danger');
       return;
     }
     const shownJobs = this.ThResultSetStore.getAllShownJobs(
-      pinboard.spaceRemaining(),
+      pinBoard.spaceRemaining(),
       thPinboardCountError,
       this.props.pushId
     );
-    pinboard.pinJobs(shownJobs);
+    pinBoard.pinJobs(shownJobs);
 
     if (!this.$rootScope.selectedJob) {
       this.$rootScope.$emit(thEvents.jobClick, shownJobs[0]);
@@ -302,7 +302,7 @@ PushHeader.propTypes = {
   showRunnableJobsCb: PropTypes.func.isRequired,
   hideRunnableJobsCb: PropTypes.func.isRequired,
   cycleWatchState: PropTypes.func.isRequired,
-  pinboard: PropTypes.object.isRequired,
+  pinBoard: PropTypes.object.isRequired,
   jobCounts: PropTypes.object,
   watchState: PropTypes.string,
   isLoggedIn: PropTypes.bool,
