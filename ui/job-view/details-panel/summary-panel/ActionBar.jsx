@@ -12,6 +12,7 @@ import { isReftest } from '../../../helpers/jobHelper';
 import { getInspectTaskUrl, getReftestUrl } from '../../../helpers/urlHelper';
 import { withUser } from '../../../context/UserContext';
 import tcJobActionsTemplate from '../../../partials/main/tcjobactions.html';
+import LogUrls from './LogUrls';
 
 class ActionBar extends React.Component {
   constructor(props) {
@@ -175,7 +176,7 @@ class ActionBar extends React.Component {
           );
           fetch(url).then((resp) => {
             let action = resp.data;
-            console.log(action);
+            // console.log(action);
 
             const template = this.$interpolate(action);
             action = template({
@@ -293,76 +294,11 @@ class ActionBar extends React.Component {
         <nav className="navbar navbar-dark info-panel-navbar">
           <ul className="nav navbar-nav actionbar-nav">
 
-            {jobLogUrls.map(jobLogUrl => (<li>
-              {jobLogUrl.parse_status === 'parsed' && <a
-                id="logviewer-btn"
-                title="Open the log viewer in a new window"
-                target="_blank"
-                rel="noopener"
-                href={lvUrl}
-                copy-value={lvFullUrl}
-                className=""
-              >
-                <img
-                  alt="Logviewer"
-                  src="../img/logviewerIcon.svg"
-                  className="logviewer-icon"
-                />
-              </a>}
-              {jobLogUrl.parse_status === 'failed' && <a
-                id="logviewer-btn"
-                title="Log parsing has failed"
-                className="disabled"
-              >
-                <img
-                  alt="logviewer"
-                  src="../img/logviewerIcon.svg"
-                  className="logviewer-icon"
-                />
-              </a>}
-              {jobLogUrl.parse_status === 'pending' && <a
-                id="logviewer-btn"
-                className="disabled"
-                title="Log parsing in progress"
-              >
-                <img
-                  alt="logviewer"
-                  src="../img/logviewerIcon.svg"
-                  className="logviewer-icon"
-                />
-              </a>}
-            </li>))}
-            <li>
-              {!jobLogUrls.length && <a
-                id="logviewer-btn"
-                className="disabled"
-                title="No logs available for this job"
-              >
-                <img
-                  alt="Logviewer"
-                  src="../img/logviewerIcon.svg"
-                  className="logviewer-icon"
-                />
-              </a>}
-            </li>
-
-            {jobLogUrls.map(jobLogUrl => (<li>
-              <a
-                id="raw-log-btn"
-                className="raw-log-icon"
-                title="Open the raw log in a new window"
-                target="_blank"
-                rel="noopener"
-                href={jobLogUrl.url}
-                copy-value={jobLogUrl.url}
-              ><span className="fa fa-file-text-o" /></a>
-            </li>))}
-            {!jobLogUrls.length && <li>
-              <a
-                className="disabled raw-log-icon"
-                title="No logs available for this job"
-              ><span className="fa fa-file-text-o" /></a>
-            </li>}
+            <LogUrls
+              logUrls={jobLogUrls}
+              lvUrl={lvUrl}
+              lvFullUrl={lvFullUrl}
+            />
             <li>
               <span
                 id="pin-job-btn"
@@ -380,7 +316,7 @@ class ActionBar extends React.Component {
                 onClick={() => this.retriggerJob([selectedJob])}
               ><span className="fa fa-repeat" /></span>
             </li>
-            {isReftest(selectedJob) && jobLogUrls.map(jobLogUrl => (<li>
+            {isReftest(selectedJob) && jobLogUrls.map(jobLogUrl => (<li key={`reftest-${jobLogUrl.id}`}>
               <a
                 title="Launch the Reftest Analyser in a new window"
                 target="_blank"
@@ -468,8 +404,8 @@ ActionBar.propTypes = {
   logParseStatus: PropTypes.string.isRequired,
   jobLogUrls: PropTypes.array,
   isTryRepo: PropTypes.bool,
-  lvUrl: PropTypes.object,
-  lvFullUrl: PropTypes.object,
+  lvUrl: PropTypes.string,
+  lvFullUrl: PropTypes.string,
 };
 
 ActionBar.defaultProps = {

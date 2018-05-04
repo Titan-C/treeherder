@@ -217,8 +217,8 @@ SummaryPanel.propTypes = {
   buildUrl: PropTypes.string,
   logParseStatus: PropTypes.string,
   isTryRepo: PropTypes.bool,
-  lvUrl: PropTypes.object,
-  lvFullUrl: PropTypes.object,
+  lvUrl: PropTypes.string,
+  lvFullUrl: PropTypes.string,
 };
 
 SummaryPanel.defaultProps = {

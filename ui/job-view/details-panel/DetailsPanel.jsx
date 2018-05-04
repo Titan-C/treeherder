@@ -38,11 +38,15 @@ class DetailsPanel extends React.Component {
       jobDetailLoading: false,
       jobLogsAllParsed: false,
       lvUrl: null,
+      lvFullUrl: null,
       reftestUrl: null,
       perfJobDetail: [],
       jobRevision: null,
       logParseStatus: 'unavailable',
       classifications: [],
+      suggestions: [],
+      errors: [],
+      bugSuggestionsLoading: false,
     };
   }
 
@@ -60,7 +64,6 @@ class DetailsPanel extends React.Component {
   loadBugSuggestions(job) {
       const { repoName } = this.props;
 
-      let errors = [];
       this.ThBugSuggestionsModel.query({
           project: repoName,
           jobId: job.id
@@ -92,20 +95,19 @@ class DetailsPanel extends React.Component {
               this.ThTextLogStepModel.query({
                   project: repoName,
                   jobId: job.id
-              }, function (textLogSteps) {
-                  errors = textLogSteps
+              }, (textLogSteps) => {
+                  const errors = textLogSteps
                       .filter(step => step.result !== 'success')
-                      .map(function (step) {
-                          return {
-                              name: step.name,
-                              result: step.result,
-                              lvURL: getLogViewerUrl(job.id, repoName, step.finished_line_number)
-                          };
-                      });
+                      .map(step => ({
+                        name: step.name,
+                        result: step.result,
+                        lvURL: getLogViewerUrl(job.id, repoName, step.finished_line_number)
+                      }));
+                  this.setState({ errors });
               });
           }
 
-          this.setState({ bugSuggestionsLoading: false, suggestions, errors });
+          this.setState({ bugSuggestionsLoading: false, suggestions });
       });
   }
 
@@ -294,6 +296,7 @@ class DetailsPanel extends React.Component {
               bugSuggestionsLoading={bugSuggestionsLoading}
               logParseStatus={logParseStatus}
               classifications={classifications}
+              jobLogUrls={jobLogUrls}
             />
           </div>}
           <div id="clipboard-container"><textarea id="clipboard" />

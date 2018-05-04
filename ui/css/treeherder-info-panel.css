@@ -5,8 +5,8 @@ strong {
 details-panel {
   /*background-color: #AAAAAA;*/
   font-size: 12px;
-  /*height: 35%;*/
-  /*max-height: 75%;*/
+  height: 35%;
+  max-height: 75%;
   /*flex: none;*/
   /*display: flex;*/
   /*flex-flow: column;*/
@@ -14,7 +14,8 @@ details-panel {
 
 .info-panel-slide {
   animation: info-panel-slide 0.4s;
-  height: 100%;
+  height: 35%;
+  max-height: 75%;
 }
 
 @keyframes info-panel-slide {

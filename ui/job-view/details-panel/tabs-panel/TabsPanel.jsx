@@ -10,11 +10,34 @@ import PerformanceTab from './PerformanceTab';
 import AutoclassifyTab from './AutoclassifyTab';
 import AnnotationsTab from './AnnotationsTab';
 import SimilarJobsTab from './SimilarJobsTab';
-// import { getStatus } from "../../helpers/jobHelper";
 import { thEvents } from '../../../js/constants';
+import { getStatus } from '../../../helpers/jobHelper';
 import { getAllUrlParams } from '../../../helpers/locationHelper';
 
 class TabsPanel extends React.Component {
+  static getDerivedStateFromProps(nextProps) {
+    const { perfJobDetail, showAutoclassifyTab, selectedJob } = nextProps;
+
+    return { tabIndex: TabsPanel.getDefaultTabIndex(
+      getStatus(selectedJob), !!perfJobDetail.length, showAutoclassifyTab)
+    };
+  }
+
+  static getDefaultTabIndex(status, showPerf, showAutoclassify) {
+    let idx = 0;
+    const tabNames = [
+      'details', 'failure', 'autoclassify', 'annotations', 'similar', 'perf'
+    ].filter(name => (
+      !((name === 'autoclassify' && !showAutoclassify) || (name === 'perf' && !showPerf))
+    ));
+    const tabIndexes = tabNames.reduce((acc, name) => ({ ...acc, [name]: idx++ }), {});
+
+    let tabIndex = showPerf ? tabIndexes.perf : tabIndexes.details;
+    if (['busted', 'testfailed', 'exception'].includes(status)) {
+      tabIndex = showAutoclassify ? tabIndexes.autoclassify : tabIndexes.failure;
+    }
+    return tabIndex;
+  }
 
   constructor(props) {
     super(props);
@@ -26,6 +49,7 @@ class TabsPanel extends React.Component {
 
     this.state = {
       showAutoclassifyTab: getAllUrlParams().has('autoclassify'),
+      tabIndex: 0,
     };
   }
 
@@ -117,12 +141,12 @@ class TabsPanel extends React.Component {
       bugSuggestionsLoading, selectedJob, perfJobDetail, repoName, jobRevision,
       classifications
     } = this.props;
-    const { showAutoclassifyTab } = this.state;
+    const { showAutoclassifyTab, tabIndex } = this.state;
 
     return (
-      <div id="tabs-panel">
-        {/*<div id="job-tabs-navbar">
-          <nav className="info-panel-navbar info-panel-navbar-tabs">
+      <div id="tabs-panel" >
+        <div className="job-tabs-divider">
+          {/*<nav className="info-panel-navbar info-panel-navbar-tabs">
 
             <ul className="nav navbar-nav info-panel-navbar-controls">
               <div
@@ -148,72 +172,77 @@ class TabsPanel extends React.Component {
               </div>
             </ul>
           </nav>
-        </div>*/}
-        <Tabs selectedTabClassName="selected-tab">
-          <TabList>
-            <Tab>Job Details</Tab>
-            <Tab>Failure Summary</Tab>
-            {showAutoclassifyTab && <Tab>Failure Classification</Tab>}
-            <Tab>Annotations</Tab>
-            <Tab>Similar Jobs</Tab>
-            {!!perfJobDetail.length && <Tab>Performance</Tab>}
-            <span className="info-panel-controls pull-right">
-              <span
-                className="btn pinboard-btn-text"
-                onClick={this.togglePinboardVisibility}
-              >PinBoard</span>
-              <span
-                onClick={this.closeJob}
-                className="btn"
-              ><span className="fa fa-times" /></span>
-            </span>
-          </TabList>
+        */}
+          <Tabs
+            selectedTabClassName="selected-tab"
+            selectedIndex={tabIndex}
+            onSelect={tabIndex => this.setState({ tabIndex })}
+          >
+            <TabList>
+              <Tab>Job Details</Tab>
+              <Tab>Failure Summary</Tab>
+              {showAutoclassifyTab && <Tab>Failure Classification</Tab>}
+              <Tab>Annotations</Tab>
+              <Tab>Similar Jobs</Tab>
+              {!!perfJobDetail.length && <Tab>Performance</Tab>}
+              <span className="info-panel-controls pull-right">
+                <span
+                  className="btn pinboard-btn-text"
+                  onClick={this.togglePinboardVisibility}
+                >PinBoard</span>
+                <span
+                  onClick={this.closeJob}
+                  className="btn"
+                ><span className="fa fa-times" /></span>
+              </span>
+            </TabList>
 
-          <TabPanel>
-            <JobDetailsTab jobDetails={jobDetails} />
-          </TabPanel>
-          <TabPanel>
-            <div className="w-100 h-100">
-              <FailureSummaryTab
-                suggestions={suggestions}
-                fileBug={fileBug}
-                selectedJob={selectedJob}
-                errors={errors}
-                bugSuggestionsLoading={bugSuggestionsLoading}
-                jobLogUrls={jobLogUrls}
+            <TabPanel>
+              <JobDetailsTab jobDetails={jobDetails} />
+            </TabPanel>
+            <TabPanel>
+              <div className="w-100 h-100">
+                <FailureSummaryTab
+                  suggestions={suggestions}
+                  fileBug={fileBug}
+                  selectedJob={selectedJob}
+                  errors={errors}
+                  bugSuggestionsLoading={bugSuggestionsLoading}
+                  jobLogUrls={jobLogUrls}
+                  logParseStatus={logParseStatus}
+                />
+              </div>
+            </TabPanel>
+            {showAutoclassifyTab && <TabPanel>
+              <AutoclassifyTab
+                job={selectedJob}
+                hasLogs={!!jobLogUrls.length}
+                logsParsed={logParseStatus !== 'pending'}
                 logParseStatus={logParseStatus}
               />
-            </div>
-          </TabPanel>
-          {showAutoclassifyTab && <TabPanel>
-            <AutoclassifyTab
-              job={selectedJob}
-              hasLogs={!!jobLogUrls.length}
-              logsParsed={logParseStatus !== 'pending'}
-              logParseStatus={logParseStatus}
-            />
-          </TabPanel>}
-          <TabPanel>
-            <AnnotationsTab
-              classificationTypes={this.thClassificationTypes}
-              classifications={classifications}
-              selectedJob={selectedJob}
-            />
-          </TabPanel>
-          <TabPanel>
-            <SimilarJobsTab
-              selectedJob={selectedJob}
-              repoName={repoName}
-            />
-          </TabPanel>
-          {!!perfJobDetail.length && <TabPanel>
-            <PerformanceTab
-              repoName={repoName}
-              perfJobDetail={perfJobDetail}
-              revision={jobRevision}
-            />
-          </TabPanel>}
-        </Tabs>
+            </TabPanel>}
+            <TabPanel>
+              <AnnotationsTab
+                classificationTypes={this.thClassificationTypes}
+                classifications={classifications}
+                selectedJob={selectedJob}
+              />
+            </TabPanel>
+            <TabPanel>
+              <SimilarJobsTab
+                selectedJob={selectedJob}
+                repoName={repoName}
+              />
+            </TabPanel>
+            {!!perfJobDetail.length && <TabPanel>
+              <PerformanceTab
+                repoName={repoName}
+                perfJobDetail={perfJobDetail}
+                revision={jobRevision}
+              />
+            </TabPanel>}
+          </Tabs>
+        </div>
       </div>
     );
   }
@@ -244,7 +273,7 @@ TabsPanel.defaultProps = {
   logParseStatus: 'pending',
   perfJobDetail: [],
   jobRevision: null,
-  fileBug: () => console.log("do filebug")
+  fileBug: () => {}
 };
 
 export default with$injector(TabsPanel);
