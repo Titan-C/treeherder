@@ -111,7 +111,7 @@ class DetailsPanel extends React.Component {
 
   async updateClassifications(job) {
     const classifications = await this.ThJobClassificationModel.get_list({ job_id: job.id });
-    this.setState({ classifications: classifications.data });
+    this.setState({ classifications });
   }
 
   selectJob(newJob) {
@@ -185,12 +185,11 @@ class DetailsPanel extends React.Component {
       let perfJobDetail = [];
       if (performanceData) {
         const signatureIds = [...new Set(performanceData.map(perf => perf.signature_id))];
-        console.log("signatureIds", signatureIds);
         const seriesListList = await Promise.all(chunk(signatureIds, 20).map(
           signatureIdChunk => this.PhSeries.getSeriesList(repoName, { id: signatureIdChunk })
         ));
         const seriesList = seriesListList.flatten();
-        console.log("seriesList", seriesList);
+
         perfJobDetail = performanceData.map(d => ({
           series: seriesList.find(s => d.signature_id === s.id),
           ...d
@@ -215,8 +214,8 @@ class DetailsPanel extends React.Component {
         reftestUrl,
         perfJobDetail,
         jobRevision,
-      }, () => {
-        this.updateClassifications(job);
+      }, async () => {
+        await this.updateClassifications(job);
         // this.updateBugs();
         this.loadBugSuggestions(job);
       });
@@ -239,7 +238,7 @@ class DetailsPanel extends React.Component {
 
 
   render() {
-    const { selectedJob, repoName, $injector, user } = this.props;
+    const { selectedJob, repoName, $injector, user, currentRepo } = this.props;
     const {
       isPinboardVisible,
       jobDetails,
@@ -252,9 +251,10 @@ class DetailsPanel extends React.Component {
       bugSuggestionsLoading,
       logParseStatus,
       classifications,
+      lvUrl,
+      lvFullUrl,
     } = this.state;
 
-    console.log("class render", classifications);
     return (
       <div
         className={selectedJob ? 'info-panel-slide' : 'hidden'}
@@ -276,8 +276,12 @@ class DetailsPanel extends React.Component {
               repoName={repoName}
               selectedJob={selectedJob}
               jobLogUrls={jobLogUrls}
+              logParseStatus={logParseStatus}
               jobDetailLoading={jobDetailLoading}
               latestClassification={classifications.length ? classifications[0] : null}
+              isTryRepo={currentRepo.isTryRepo}
+              lvUrl={lvUrl}
+              lvFullUrl={lvFullUrl}
             />
             <TabsPanel
               jobDetails={jobDetails}
@@ -305,11 +309,13 @@ DetailsPanel.propTypes = {
   repoName: PropTypes.string.isRequired,
   selectedJob: PropTypes.object,
   user: PropTypes.object,
+  currentRepo: PropTypes.object,
 };
 
 DetailsPanel.defaultProps = {
   selectedJob: null,
-  user: { isLoggedIn: false, isStaff: false, email: null }
+  user: { isLoggedIn: false, isStaff: false, email: null },
+  currentRepo: { isTryRepo: true }
 };
 
 treeherder.component('detailsPanel', react2angular(

@@ -9,7 +9,7 @@ import { getBugUrl, getLogViewerUrl, getReftestUrl } from "../../../../helpers/u
 import { isReftest } from "../../../../helpers/jobHelper";
 import { getSearchWords } from "../../../../helpers/displayHelper";
 import intermittentTemplate from '../../../../partials/main/intermittent.html';
-import { withPinboard } from '../../../../context/PinboardContext';
+import { withPinBoard } from '../../../../context/PinBoardContext';
 
 /**
  * Editable option
@@ -211,4 +211,4 @@ LineOption.defaultProps = {
   manualBugNumber: undefined,
 };
 
-export default withPinboard(LineOption);
+export default withPinBoard(LineOption);

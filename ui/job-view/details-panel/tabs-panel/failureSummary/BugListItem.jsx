@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words';
 
 import { getBugUrl } from '../../../../helpers/urlHelper';
 import { getSearchWords } from '../../../../helpers/displayHelper';
-import { withPinboard } from '../../../../context/PinboardContext';
+import { withPinBoard } from '../../../../context/PinBoardContext';
 
 
 function BugListItem(props) {
@@ -57,4 +57,4 @@ BugListItem.defaultProps = {
   title: null,
 };
 
-export default withPinboard(BugListItem);
+export default withPinBoard(BugListItem);

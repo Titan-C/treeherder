@@ -9,6 +9,7 @@ import FailureSummaryTab from './FailureSummaryTab';
 import PerformanceTab from './PerformanceTab';
 import AutoclassifyTab from './AutoclassifyTab';
 import AnnotationsTab from './AnnotationsTab';
+import SimilarJobsTab from './SimilarJobsTab';
 // import { getStatus } from "../../helpers/jobHelper";
 import { thEvents } from '../../../js/constants';
 import { getAllUrlParams } from '../../../helpers/locationHelper';
@@ -106,7 +107,7 @@ class TabsPanel extends React.Component {
 
 
   closeJob() {
-    console.log("close the job now");
+    // console.log("close the job now");
   }
 
   render() {
@@ -118,7 +119,6 @@ class TabsPanel extends React.Component {
     } = this.props;
     const { showAutoclassifyTab } = this.state;
 
-    console.log("tabs perf", perfJobDetail);
     return (
       <div id="tabs-panel">
         {/*<div id="job-tabs-navbar">
@@ -201,7 +201,10 @@ class TabsPanel extends React.Component {
             />
           </TabPanel>
           <TabPanel>
-            <div>Similar Jobs</div>
+            <SimilarJobsTab
+              selectedJob={selectedJob}
+              repoName={repoName}
+            />
           </TabPanel>
           {!!perfJobDetail.length && <TabPanel>
             <PerformanceTab

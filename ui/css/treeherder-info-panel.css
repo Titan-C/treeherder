@@ -233,6 +233,10 @@ details-panel {
   flex-direction: row;
 }
 
+.actionbar-nav .btn {
+  cursor: pointer;
+}
+
 .actionbar-nav > li {
   /* Override padding on all icons to keep compact */
   padding: 0 !important;
@@ -355,6 +359,11 @@ details-panel {
 
 #job-details-pane {
   overflow: auto;
+}
+
+#result-status-pane {
+  width: 100%;
+  padding: 4px;
 }
 
 #result-status-pane div {

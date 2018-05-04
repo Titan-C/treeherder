@@ -7,7 +7,7 @@ import Mousetrap from "mousetrap";
 
 import { getBtnClass, getStatus } from '../../../helpers/jobHelper';
 import { thEvents, thPinboardCountError } from "../../../js/constants";
-import { PinboardContext } from "../../../context/PinboardContext";
+import { PinBoardContext } from "../../../context/PinBoardContext";
 import { with$injector } from '../../../context/InjectorContext';
 
 class PinBoard extends React.Component {
@@ -309,7 +309,7 @@ class PinBoard extends React.Component {
   canSaveClassifications() {
     const thisClass = this.state.classification;
     return this.hasPinnedJobs() && this.props.isLoggedIn &&
-      (!!PinboardContext.relatedBugs.length ||
+      (!!PinBoardContext.relatedBugs.length ||
         (thisClass.failure_classification_id !== 4 && thisClass.failure_classification_id !== 2) ||
         this.$rootScope.currentRepo.is_try_repo ||
         this.$rootScope.currentRepo.repository_group.name === "project repositories" ||
@@ -320,7 +320,7 @@ class PinBoard extends React.Component {
   // Facilitates Clear all if no jobs pinned to reset pinBoard UI
   pinboardIsDirty() {
     return this.state.classification.text !== '' ||
-      !!PinboardContext.relatedBugs.length ||
+      !!PinBoardContext.relatedBugs.length ||
       this.state.classification.failure_classification_id !== 4;
   }
 
@@ -422,7 +422,7 @@ class PinBoard extends React.Component {
       if (!this.state.newEnteredBugNumber) {
         this.toggleEnterBugNumber(false);
       } else if (/^[0-9]*$/.test(this.state.newEnteredBugNumber)) {
-        PinboardContext.addBug({ id: this.state.newEnteredBugNumber });
+        PinBoardContext.addBug({ id: this.state.newEnteredBugNumber });
         this.toggleEnterBugNumber(false);
         return true;
       }
@@ -453,7 +453,7 @@ class PinBoard extends React.Component {
     const classificationOptions = classificationTypes; // make options for the classification Select object
 
     return (
-      <PinboardContext.Provider value={pinnedJobs}>
+      <PinBoardContext.Provider value={pinnedJobs}>
         <div className={isVisible ? '' : 'hidden'} >
           <div id="pinned-job-list">
             <div className="content">
@@ -623,7 +623,7 @@ class PinBoard extends React.Component {
           </div>
 
         </div>
-      </PinboardContext.Provider>
+      </PinBoardContext.Provider>
     );
   }
 }

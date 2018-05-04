@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { with$injector } from '../../../context/InjectorContext';
-import { withPinboard } from '../../../context/PinboardContext';
+import { withPinBoard } from '../../../context/PinBoardContext';
 import ErrorsList from './failureSummary/ErrorsList';
 import SuggestionsListItem from './failureSummary/SuggestionsListItem';
 import ListItem from './failureSummary/ListItem';
@@ -99,4 +99,4 @@ FailureSummaryTab.defaultProps = {
   logParseStatus: 'pending',
 };
 
-export default withPinboard(with$injector(FailureSummaryTab));
+export default withPinBoard(with$injector(FailureSummaryTab));

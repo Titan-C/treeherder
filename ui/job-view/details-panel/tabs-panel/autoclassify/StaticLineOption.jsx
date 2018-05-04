@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words';
 
 import { getBugUrl } from "../../../../helpers/urlHelper";
 import { getSearchWords } from "../../../../helpers/displayHelper";
-import { withPinboard } from '../../../../context/PinboardContext';
+import { withPinBoard } from '../../../../context/PinBoardContext';
 
 /**
  * Non-editable best option
@@ -99,4 +99,4 @@ StaticLineOption.defaultProps = {
   manualBugNumber: undefined,
 };
 
-export default withPinboard(StaticLineOption);
+export default withPinBoard(StaticLineOption);

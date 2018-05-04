@@ -13,7 +13,7 @@ import {
 } from '../helpers/jobHelper';
 import PushLoadErrors from './PushLoadErrors';
 import { thEvents } from "../js/constants";
-import { withPinboard } from '../context/PinboardContext';
+import { withPinBoard } from '../context/PinBoardContext';
 
 export default class PushList extends React.Component {
 
@@ -332,6 +332,6 @@ PushList.defaultProps = {
 };
 
 treeherder.component('pushList', react2angular(
-  withPinboard(PushList),
+  withPinBoard(PushList),
   ['repoName', 'user', 'revision', 'currentRepo'],
   ['$injector']));

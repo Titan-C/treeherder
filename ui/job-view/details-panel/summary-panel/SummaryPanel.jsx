@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import ActionBar from './ActionBar';
+import ActionBar from './ActionBar';
 import ClassificationsPanel from './ClassificationsPanel';
 import StatusPanel from './StatusPanel';
 import {
@@ -83,14 +83,8 @@ export default class SummaryPanel extends React.Component {
 
   render() {
     const {
-      repoName,
-      selectedJob,
-      latestClassification,
-      bugs,
-      jobLogUrls,
-      classificationTypes,
-      jobDetailLoading,
-      buildUrl
+      repoName, selectedJob, latestClassification, bugs, jobLogUrls,
+      jobDetailLoading, buildUrl, lvUrl, lvFullUrl, isTryRepo, logParseStatus,
     } = this.props;
 
     const timeFields = this.getTimeFields(selectedJob);
@@ -107,7 +101,15 @@ export default class SummaryPanel extends React.Component {
 
     return (
       <div id="job-details-panel">
-        {/*<ActionBar />*/}
+        <ActionBar
+          repoName={repoName}
+          selectedJob={selectedJob}
+          logParseStatus={logParseStatus}
+          isTryRepo={isTryRepo}
+          lvUrl={lvUrl}
+          lvFullUrl={lvFullUrl}
+          jobLogUrls={jobLogUrls}
+        />
         <div>
           <div>
             {jobDetailLoading &&
@@ -117,18 +119,16 @@ export default class SummaryPanel extends React.Component {
                 </div>
               </div>
             }
-            {latestClassification &&
-              <ClassificationsPanel
-                job={selectedJob}
-                classification={latestClassification}
-                bugs={bugs}
-                classificationTypes={classificationTypes}
-                repoName={repoName}
-              />
-            }
-            <StatusPanel selectedJob={selectedJob} />
 
-            <ul className="list-unstyled content-spacer">
+            <ul className="list-unstyled">
+              {latestClassification &&
+                <ClassificationsPanel
+                  job={selectedJob}
+                  classification={latestClassification}
+                  bugs={bugs}
+                  repoName={repoName}
+                />}
+              <StatusPanel selectedJob={selectedJob} />
               <li className="small">
                 <label title="">Job</label>
                 <a
@@ -213,9 +213,12 @@ SummaryPanel.propTypes = {
   latestClassification: PropTypes.object,
   bugs: PropTypes.array,
   jobLogUrls: PropTypes.array,
-  classificationTypes: PropTypes.array,
   jobDetailLoading: PropTypes.bool,
   buildUrl: PropTypes.string,
+  logParseStatus: PropTypes.string,
+  isTryRepo: PropTypes.bool,
+  lvUrl: PropTypes.object,
+  lvFullUrl: PropTypes.object,
 };
 
 SummaryPanel.defaultProps = {
@@ -223,7 +226,10 @@ SummaryPanel.defaultProps = {
   latestClassification: null,
   bugs: [],
   jobLogUrls: [],
-  classificationTypes: [],
   jobDetailLoading: false,
   buildUrl: null,
+  logParseStatus: 'pending',
+  isTryRepo: true,
+  lvUrl: null,
+  lvFullUrl: null,
 };

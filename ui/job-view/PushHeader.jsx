@@ -4,7 +4,7 @@ import { Alert } from 'reactstrap';
 import PushActionMenu from './PushActionMenu';
 import { toDateStr } from '../helpers/displayHelper';
 import { thPinboardCountError, thEvents } from "../js/constants";
-import { withPinboard } from '../context/PinboardContext';
+import { withPinBoard } from '../context/PinBoardContext';
 
 function Author(props) {
   const authorMatch = props.author.match(/\<(.*?)\>+/);
@@ -318,4 +318,4 @@ PushHeader.defaultProps = {
   urlBasePath: '',
 };
 
-export default withPinboard(PushHeader);
+export default withPinBoard(PushHeader);

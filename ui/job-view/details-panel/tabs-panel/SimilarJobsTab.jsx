@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { react2angular } from 'react2angular/index.es2015';
 
 import { getBtnClass, getStatus } from '../../../helpers/jobHelper';
 import { toDateStr, toShortDateStr } from '../../../helpers/displayHelper';
 import { getSlaveHealthUrl, getJobsUrl } from '../../../helpers/urlHelper';
-import treeherder from "../../../js/treeherder";
-import { thEvents } from "../../../js/constants";
+import { with$injector } from '../../../context/InjectorContext';
 
 class SimilarJobsTab extends React.Component {
   constructor(props) {
@@ -18,11 +16,9 @@ class SimilarJobsTab extends React.Component {
     this.ThTextLogStepModel = $injector.get('ThTextLogStepModel');
     this.ThResultSetModel = $injector.get('ThResultSetModel');
     this.thNotify = $injector.get('thNotify');
-    this.thTabs = $injector.get('thTabs');
     this.thClassificationTypes = $injector.get('thClassificationTypes');
 
     this.pageSize = 20;
-    this.tab = this.thTabs.tabs.similarJobs;
 
     this.state = {
       similarJobs: [],
@@ -31,7 +27,6 @@ class SimilarJobsTab extends React.Component {
       page: 1,
       selectedSimilarJob: null,
       hasNextPage: false,
-      selectedJob: null,
       isLoading: true,
     };
 
@@ -47,18 +42,12 @@ class SimilarJobsTab extends React.Component {
     this.showNext = this.showNext.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
 
-    this.jobClickUnlisten = this.$rootScope.$on(thEvents.jobClick, (event, job) => {
-      this.setState({ selectedJob: job, similarJobs: [], isLoading: true }, this.getSimilarJobs);
-    });
-  }
-
-  componentWillUnmount() {
-    this.jobClickUnlisten();
+    this.getSimilarJobs();
   }
 
   async getSimilarJobs() {
-    const { page, selectedJob, similarJobs, selectedSimilarJob } = this.state;
-    const { repoName } = this.props;
+    const { page, similarJobs, selectedSimilarJob } = this.state;
+    const { repoName, selectedJob } = this.props;
     const options = {
       // get one extra to detect if there are more jobs that can be loaded (hasNextPage)
       count: this.pageSize + 1,
@@ -297,7 +286,4 @@ SimilarJobsTab.propTypes = {
   repoName: PropTypes.string.isRequired,
 };
 
-treeherder.component('similarJobsTab', react2angular(
-  SimilarJobsTab,
-  ['repoName'],
-  ['$injector']));
+export default with$injector(SimilarJobsTab);

@@ -6,13 +6,14 @@ import { with$injector } from '../../../context/InjectorContext';
 
 function ClassificationsPanel(props) {
   const {
-    $injector, repoName, classification, job, classificationTypes, bugs,
+    $injector, repoName, classification, job, bugs,
   } = props;
 
-  this.ThRepositoryModel = $injector.get('ThRepositoryModel');
-  this.dateFilter = $injector.get('dateFilter');
+  const ThRepositoryModel = $injector.get('ThRepositoryModel');
+  const dateFilter = $injector.get('dateFilter');
+  const classificationTypes = $injector.get('thClassificationTypes');
 
-  const repo = this.ThRepositoryModel.getRepo(repoName);
+  const repo = ThRepositoryModel.getRepo(repoName);
   const repoURLHTML = { __html: linkifyRevisions(classification.text, repo) };
   const failureId = classification.failure_classification_id;
   const iconClass = (failureId === 7 ?
@@ -20,7 +21,7 @@ function ClassificationsPanel(props) {
   const classificationName = classificationTypes.classifications[failureId];
 
   return (
-    <ul className="list-unstyled content-spacer">
+    <React.Fragment>
       <li>
         <span title={classificationName.name}>
           <i className={`fa ${iconClass}`} />
@@ -38,12 +39,12 @@ function ClassificationsPanel(props) {
         <li><em dangerouslySetInnerHTML={repoURLHTML} /></li>
       }
       <li className="revision-comment">
-        {this.dateFilter(classification.created, 'EEE MMM d, H:mm:ss')}
+        {dateFilter(classification.created, 'EEE MMM d, H:mm:ss')}
       </li>
       <li className="revision-comment">
         {classification.who}
       </li>
-    </ul>
+    </React.Fragment>
   );
 }
 
@@ -52,7 +53,6 @@ ClassificationsPanel.propTypes = {
   repoName: PropTypes.string.isRequired,
   classification: PropTypes.object.isRequired,
   job: PropTypes.object.isRequired,
-  classificationTypes: PropTypes.object.isRequired,
   bugs: PropTypes.array,
 };
 

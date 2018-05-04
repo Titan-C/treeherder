@@ -11,7 +11,7 @@ import { thEvents } from "../../../js/constants";
 import treeherder from "../../../js/treeherder";
 import { with$injector } from '../../../context/InjectorContext';
 import { withUser } from '../../../context/UserContext';
-import { withPinboard } from '../../../context/PinboardContext';
+import { withPinBoard } from '../../../context/PinBoardContext';
 
 class AutoclassifyTab extends React.Component {
   static getDerivedStateFromProps(nextProps) {
@@ -541,7 +541,7 @@ AutoclassifyTab.defaultProps = {
   logParseStatus: 'pending',
 };
 
-export default with$injector(withUser(withPinboard(AutoclassifyTab)));
+export default with$injector(withUser(withPinBoard(AutoclassifyTab)));
 
 treeherder.component('autoclassifyTab', react2angular(
   AutoclassifyTab,
