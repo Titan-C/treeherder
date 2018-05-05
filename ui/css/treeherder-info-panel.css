@@ -14,8 +14,8 @@ details-panel {
 
 .info-panel-slide {
   animation: info-panel-slide 0.4s;
-  height: 35%;
-  max-height: 75%;
+  height: 100%;
+  /*max-height: 75%;*/
 }
 
 @keyframes info-panel-slide {
@@ -25,6 +25,11 @@ details-panel {
 
 #tabs-panel {
   width: 100%;
+}
+
+.info-panel-content .react-tabs__tab-panel,
+.job-tabs-content  {
+  overflow: auto;
 }
 
 div#info-panel .navbar,
@@ -192,11 +197,6 @@ div#info-panel .info-panel-navbar > li.active a:focus {
 .react-tabs {
   height: 100%;
   width: 100%;
-}
-
-details-panel {
-    height: 35%;
-    max-height: 75%;
 }
 
 #info-panel-content {

@@ -1,8 +1,9 @@
-#job-tabs-navbar .info-panel-navbar #pinboard-btn {
-  margin-top: -2px;
+#pinboard-btn {
+  margin-top: -3px;
+  margin-bottom: 1px;
   background-color: #e6eef5;
   color: #252c33;
-  line-height: 30px;
+  line-height: 22px;
   cursor: pointer;
 }
 

@@ -13,6 +13,7 @@ import SimilarJobsTab from './SimilarJobsTab';
 import { thEvents } from '../../../js/constants';
 import { getStatus } from '../../../helpers/jobHelper';
 import { getAllUrlParams } from '../../../helpers/locationHelper';
+import { withPinBoard } from '../../../context/PinBoardContext';
 
 class TabsPanel extends React.Component {
   static getDerivedStateFromProps(nextProps) {
@@ -117,19 +118,6 @@ class TabsPanel extends React.Component {
   //   }
   // }
 
-  // getCountPinnedTitle() {
-  //     let title = "";
-  //
-  //     if (thPinboard.count.numPinnedJobs === 1) {
-  //         title = "You have " + thPinboard.count.numPinnedJobs + " job pinned";
-  //     } else if (thPinboard.count.numPinnedJobs > 1) {
-  //         title = "You have " + thPinboard.count.numPinnedJobs + " jobs pinned";
-  //     }
-  //
-  //     return title;
-  // };
-
-
   closeJob() {
     // console.log("close the job now");
   }
@@ -139,110 +127,96 @@ class TabsPanel extends React.Component {
       jobDetails,
       fileBug, jobLogUrls, logParseStatus, suggestions, errors,
       bugSuggestionsLoading, selectedJob, perfJobDetail, repoName, jobRevision,
-      classifications
+      classifications, togglePinBoardVisibility, isPinBoardVisible, pinBoard,
     } = this.props;
     const { showAutoclassifyTab, tabIndex } = this.state;
+    const countPinnedJobs = pinBoard.pinnedJobs.length;
 
     return (
-      <div id="tabs-panel" >
-        <div className="job-tabs-divider">
-          {/*<nav className="info-panel-navbar info-panel-navbar-tabs">
-
-            <ul className="nav navbar-nav info-panel-navbar-controls">
-              <div
-                title={isPinboardVisible ? 'Close the pinboard' : 'Open the pinboard'}
-                className="pinboard-btn-text"
+      <div id="tabs-panel" className="job-tabs-divider">
+        <Tabs
+          selectedTabClassName="selected-tab"
+          selectedIndex={tabIndex}
+          onSelect={tabIndex => this.setState({ tabIndex })}
+        >
+          <TabList>
+            <Tab>Job Details</Tab>
+            <Tab>Failure Summary</Tab>
+            {showAutoclassifyTab && <Tab>Failure Classification</Tab>}
+            <Tab>Annotations</Tab>
+            <Tab>Similar Jobs</Tab>
+            {!!perfJobDetail.length && <Tab>Performance</Tab>}
+            <span className="info-panel-controls pull-right">
+              <span
+                id="pinboard-btn"
+                className="btn pinboard-btn-text"
+                onClick={togglePinBoardVisibility}
+                title={isPinBoardVisible ? 'Close the pinboard' : 'Open the pinboard'}
               >PinBoard
-                <div
-                  ng-if="pinboard_service.count.numPinnedJobs"
-                  title={getCountPinnedTitle()}
-                  className="pin-count-group"
-                  ng-class="{'pin-count-group-3-digit': (pinboard_service.count.numPinnedJobs > 99)}"
+                {!!countPinnedJobs && <div
+                  title={`You have ${countPinnedJobs} job${countPinnedJobs > 1 ? 's' : ''} pinned`}
+                  className={`pin-count-group ${countPinnedJobs > 99 ? 'pin-count-group-3-digit' : ''}`}
                 >
                   <div
-                    className="pin-count-text"
-                    ng-class="{'pin-count-text-3-digit': (pinboard_service.count.numPinnedJobs > 99)}"
-                  >
-                    {this.getCountPinnedJobs()}</div>
-                </div>
+                    className={`pin-count-text ${countPinnedJobs > 99 ? 'pin-count-group-3-digit' : ''}`}
+                  >{countPinnedJobs}</div>
+                </div>}
                 <span
-                  className="fa"
-                  ng-class="isPinboardVisible ? 'fa-angle-down' : 'fa-angle-up'"
+                  className={`fa ${isPinBoardVisible ? 'fa-angle-down' : 'fa-angle-up'}`}
                 />
-              </div>
-            </ul>
-          </nav>
-        */}
-          <Tabs
-            selectedTabClassName="selected-tab"
-            selectedIndex={tabIndex}
-            onSelect={tabIndex => this.setState({ tabIndex })}
-          >
-            <TabList>
-              <Tab>Job Details</Tab>
-              <Tab>Failure Summary</Tab>
-              {showAutoclassifyTab && <Tab>Failure Classification</Tab>}
-              <Tab>Annotations</Tab>
-              <Tab>Similar Jobs</Tab>
-              {!!perfJobDetail.length && <Tab>Performance</Tab>}
-              <span className="info-panel-controls pull-right">
-                <span
-                  className="btn pinboard-btn-text"
-                  onClick={this.togglePinboardVisibility}
-                >PinBoard</span>
-                <span
-                  onClick={this.closeJob}
-                  className="btn"
-                ><span className="fa fa-times" /></span>
               </span>
-            </TabList>
+              <span
+                onClick={this.closeJob}
+                className="btn"
+              ><span className="fa fa-times" /></span>
+            </span>
+          </TabList>
 
-            <TabPanel>
-              <JobDetailsTab jobDetails={jobDetails} />
-            </TabPanel>
-            <TabPanel>
-              <div className="w-100 h-100">
-                <FailureSummaryTab
-                  suggestions={suggestions}
-                  fileBug={fileBug}
-                  selectedJob={selectedJob}
-                  errors={errors}
-                  bugSuggestionsLoading={bugSuggestionsLoading}
-                  jobLogUrls={jobLogUrls}
-                  logParseStatus={logParseStatus}
-                />
-              </div>
-            </TabPanel>
-            {showAutoclassifyTab && <TabPanel>
-              <AutoclassifyTab
-                job={selectedJob}
-                hasLogs={!!jobLogUrls.length}
-                logsParsed={logParseStatus !== 'pending'}
+          <TabPanel>
+            <JobDetailsTab jobDetails={jobDetails} />
+          </TabPanel>
+          <TabPanel>
+            <div className="w-100 h-100">
+              <FailureSummaryTab
+                suggestions={suggestions}
+                fileBug={fileBug}
+                selectedJob={selectedJob}
+                errors={errors}
+                bugSuggestionsLoading={bugSuggestionsLoading}
+                jobLogUrls={jobLogUrls}
                 logParseStatus={logParseStatus}
               />
-            </TabPanel>}
-            <TabPanel>
-              <AnnotationsTab
-                classificationTypes={this.thClassificationTypes}
-                classifications={classifications}
-                selectedJob={selectedJob}
-              />
-            </TabPanel>
-            <TabPanel>
-              <SimilarJobsTab
-                selectedJob={selectedJob}
-                repoName={repoName}
-              />
-            </TabPanel>
-            {!!perfJobDetail.length && <TabPanel>
-              <PerformanceTab
-                repoName={repoName}
-                perfJobDetail={perfJobDetail}
-                revision={jobRevision}
-              />
-            </TabPanel>}
-          </Tabs>
-        </div>
+            </div>
+          </TabPanel>
+          {showAutoclassifyTab && <TabPanel>
+            <AutoclassifyTab
+              job={selectedJob}
+              hasLogs={!!jobLogUrls.length}
+              logsParsed={logParseStatus !== 'pending'}
+              logParseStatus={logParseStatus}
+            />
+          </TabPanel>}
+          <TabPanel>
+            <AnnotationsTab
+              classificationTypes={this.thClassificationTypes}
+              classifications={classifications}
+              selectedJob={selectedJob}
+            />
+          </TabPanel>
+          <TabPanel>
+            <SimilarJobsTab
+              selectedJob={selectedJob}
+              repoName={repoName}
+            />
+          </TabPanel>
+          {!!perfJobDetail.length && <TabPanel>
+            <PerformanceTab
+              repoName={repoName}
+              perfJobDetail={perfJobDetail}
+              revision={jobRevision}
+            />
+          </TabPanel>}
+        </Tabs>
       </div>
     );
   }
@@ -253,6 +227,9 @@ TabsPanel.propTypes = {
   jobDetails: PropTypes.array.isRequired,
   repoName: PropTypes.string.isRequired,
   classifications: PropTypes.array.isRequired,
+  pinBoard: PropTypes.object.isRequired,
+  togglePinBoardVisibility: PropTypes.func.isRequired,
+  isPinBoardVisible: PropTypes.bool.isRequired,
   perfJobDetail: PropTypes.array,
   fileBug: PropTypes.func,
   suggestions: PropTypes.array,
@@ -276,4 +253,4 @@ TabsPanel.defaultProps = {
   fileBug: () => {}
 };
 
-export default with$injector(TabsPanel);
+export default with$injector(withPinBoard(TabsPanel));

@@ -32,7 +32,7 @@ class DetailsPanel extends React.Component {
     this.selectJobPromise = null;
 
     this.state = {
-      isPinboardVisible: false,
+      isPinBoardVisible: false,
       jobDetails: [],
       jobLogUrls: [],
       jobDetailLoading: false,
@@ -57,8 +57,8 @@ class DetailsPanel extends React.Component {
     });
   }
 
-  togglePinboardVisibility() {
-      this.setState({ isPinboardVisible: !this.state.isPinboardVisible });
+  togglePinBoardVisibility() {
+      this.setState({ isPinBoardVisible: !this.state.isPinBoardVisible });
   }
 
   loadBugSuggestions(job) {
@@ -242,7 +242,7 @@ class DetailsPanel extends React.Component {
   render() {
     const { selectedJob, repoName, $injector, user, currentRepo } = this.props;
     const {
-      isPinboardVisible,
+      isPinBoardVisible,
       jobDetails,
       jobRevision,
       jobLogUrls,
@@ -270,7 +270,7 @@ class DetailsPanel extends React.Component {
           />
           <PinBoard
             id="pinboard-panel"
-            isVisible={isPinboardVisible}
+            isVisible={isPinBoardVisible}
             isLoggedIn={user.isLoggedIn || false}
           />
           {!!selectedJob && <div id="info-panel-content">
@@ -297,6 +297,8 @@ class DetailsPanel extends React.Component {
               logParseStatus={logParseStatus}
               classifications={classifications}
               jobLogUrls={jobLogUrls}
+              isPinBoardVisible={isPinBoardVisible}
+              togglePinBoardVisibility={() => this.togglePinBoardVisibility()}
             />
           </div>}
           <div id="clipboard-container"><textarea id="clipboard" />
